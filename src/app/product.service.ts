@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { Product } from './models/product';
@@ -44,8 +44,11 @@ export class ProductService {
       console.log('Products already loaded from local storage.');
       return;
     }
-
-    this.http.get<any>(`${environment.api_url}/products/all-products`).subscribe(
+    const headers = new HttpHeaders({
+      'x-auth-api-key': environment.api_key,
+    });
+    
+    this.http.get<any>(`${environment.api_url}/products/all-products`, { headers }).subscribe(
       (products) => {
         this.products.next(products.data); // Update BehaviorSubject
         this.saveProductsToLocalStorage(products.data); // Save to local storage
