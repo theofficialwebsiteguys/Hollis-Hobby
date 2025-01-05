@@ -44,4 +44,4 @@ Thumbs.db
 /server/node_modules
 .vercel
 
-environments/
+src/environments/
